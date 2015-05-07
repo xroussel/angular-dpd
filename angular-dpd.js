@@ -10,9 +10,12 @@ angular.module('dpd', []).value('dpdConfig', [])
         if (!io.connect) {
             throw ('angular-dpd: socket.io library not available, includ the client library or set dpdConfig.useSocketIo = false');
         }
-        var socket = angularDpdSockets[dpdConfig.serverRoot] = angularDpdSockets[dpdConfig.serverRoot] || io.connect(dpdConfig.serverRoot, dpdConfig.socketOpts);
+        var socket = null ;
         var listeners = {};
         return {
+            connect: function() {
+                socket = angularDpdSockets[dpdConfig.serverRoot] = angularDpdSockets[dpdConfig.serverRoot] || io.connect(dpdConfig.serverRoot, dpdConfig.socketOpts);
+            },
             on: function(eventName, callback) {
                 listeners[callback] = function() {
                     var args = arguments;
